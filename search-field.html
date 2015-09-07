@@ -1,0 +1,23 @@
+<input
+        class="mySearchField"
+    name="searchBox"
+    ng-model="ctrl.userInput"
+    ng-change="ctrl.parse()"
+    />
+<button>Search</button>
+<br />
+<span>Position <span class="result">{{ctrl.parsed.position}}</span><span>
+    <span>Reference Bases <span class="result">{{ctrl.parsed.refBase}}</span><span>
+    <span>Alternate Bases <span class="result">{{ctrl.parsed.altBase}}</span><span>
+
+
+
+<style>
+    .mySearchField {
+        width: 500px;
+        height: 25px;
+    }
+    .result {
+        color: red;
+    }
+</style>
