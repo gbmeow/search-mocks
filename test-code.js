@@ -11,21 +11,17 @@ function Matcher() {
 Matcher.prototype.findMatches = function(values, patterns) {
 
     var keys = _.keys(patterns);
-    var result = [];
-    _.forEach(keys, function(ke) {
-        var regex = patterns[ke].pattern;
-        _.forEach(values, function(value) {
-            if (regex.test(value)) {
-                result.push({key: ke, value: value});
-                return false;
-            }
-        });
+    var regexes = _.values(patterns);
+
+    var result = {};
+    _.forEach(keys, function(ke, idx) {
+        var regex = regexes[idx].pattern;
+        if (regex.test(values[idx]))
+            result[ke] = values[idx];
+
     });
-    var processed = {};
-    _.forEach(result, function(item, key) {
-        processed[item.key] = item.value;
-    });
-    return processed;
+    return result;
+
 }
 
 module.exports = Matcher;

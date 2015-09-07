@@ -15,52 +15,69 @@ app.directive('searchField', function() {
         controller: ['ValidateParams', function(ValidateParams) {
             var vm = this;
             vm.userInput = '';
+
+            var suggestions = {
+                position: 'position 1000',
+                refBase: 'refBase A',
+                altBase: 'altBase C'
+            }
+            vm.displayInput = suggestions.position;
             vm.parse = function() {
+
+                if (vm.userInput.length <= 0) {
+                    makeParsed();
+                }
                 if (vm.userInput) {
                     parseValues(vm.userInput);
-                }
+                    if (vm.position) {
+                        vm.displayInput = suggestions.refBase;
+                    } else if (vm.refBase) {
+                            vm.displayInput = suggestions.altBase;
+                        }
+                    }
             }
+
+                //pos:1000 ref:A alt:D
 
             function parseValues(values) {
                 var patterns = {
                     position: {type: 'number', pattern: /[1-9][0-9]*|0/},
-                    refBase: {type:'string', pattern: /A-Z/},
-                    altBase: {type: 'string', pattern: /A-Z/}
+                    refBase: {type:'string', pattern: /[a-zA-Z]*/},
+                    altBase: {type: 'string', pattern: /[a-zA-Z]*/}
                 }
 
                 var result = findMatches(values.split(' '), patterns);
-
+                console.log(result, values.split(' '));
                 if (result) {
-
-                    vm.parsed = {
-                        position: result.position || 'e.g.1000',
-                        refBase: result.refBase || 'A',
-                        altBase: result.altBase || 'C'
-                    }
+                    makeParsed(result);
 
                 }
 
+            }
+
+            function makeParsed(obj) {
+                obj = obj || {};
+                vm.parsed = {
+                    position: obj.position || null,
+                    refBase: obj.refBase || null,
+                    altBase: obj.altBase || null
+                }
             }
 
 
             function findMatches(values, patterns) {
 
                 var keys = _.keys(patterns);
-                var result = [];
-                _.forEach(keys, function(ke) {
-                    var regex = patterns[ke].pattern;
-                    _.forEach(values, function(value) {
-                        if (regex.test(value)) {
-                            result.push({key: ke, value: value});
-                            return false;
-                        }
-                    });
+                var regexes = _.values(patterns);
+
+                var result = {};
+                _.forEach(keys, function(ke, idx) {
+                    var regex = regexes[idx].pattern;
+                    if (regex.test(values[idx]))
+                        result[ke] = values[idx];
+
                 });
-                var processed = {};
-                _.forEach(result, function(item, key) {
-                    processed[item.key] = item.value;
-                });
-                return processed;
+                return result;
             }
 
 

@@ -6,9 +6,22 @@
     />
 <button>Search</button>
 <br />
-<span>Position <span class="result">{{ctrl.parsed.position}}</span><span>
-    <span>Reference Bases <span class="result">{{ctrl.parsed.refBase}}</span><span>
-    <span>Alternate Bases <span class="result">{{ctrl.parsed.altBase}}</span><span>
+<span>Position <span class="result">{{ctrl.parsed.position}}
+    <i ng-if="!ctrl.parsed.position" class="fa fa-circle-o"></i>
+    <i ng-if="ctrl.parsed.position" class="valid fa fa-check-circle-o"></i>
+
+</span>
+    <span>
+    <span>Reference Bases <span class="result">{{ctrl.parsed.refBase}}
+        <i ng-if="!ctrl.parsed.refBase" class="fa fa-circle-o"></i>
+        <i ng-if="ctrl.parsed.refBase" class="valid fa fa-check-circle-o"></i>
+    </span>
+    </span>
+    <span>Alternate Bases <span class="result">{{ctrl.parsed.altBase}}
+        <i ng-if="!ctrl.parsed.altBase" class="fa fa-circle-o"></i>
+        <i ng-if="ctrl.parsed.altBase" class="valid fa fa-check-circle-o"></i>
+        </span>
+
 
 
 
@@ -19,5 +32,8 @@
     }
     .result {
         color: red;
+    }
+    .valid {
+        color: green;
     }
 </style>

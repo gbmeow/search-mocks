@@ -19,10 +19,12 @@ describe("validation", function() {
             refBase: {type:'string', pattern: /[a-zA-Z]*/},
             altBase: {type: 'string', pattern: /[a-zA-Z]*/}
         }
-        var userSearch = 'A 10000 Tennis'.split(' ');
+        var userSearch = '10000 A T'.split(' ');
         var result = matcher.findMatches(userSearch, patterns);
 
         expect(result).to.have.deep.property('position', '10000');
+        expect(result).to.have.deep.property('refBase', 'A');
+        expect(result).to.have.deep.property('altBase', 'T');
     });
 
 
